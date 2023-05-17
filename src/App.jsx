@@ -7,6 +7,8 @@ import './App.css';
 function App() {
   const [gameStarted, setGameStarted] = useState(false);
   const [bgColor, setBgColor] = useState('#304859');
+  const [boardSize,setBoardSize]=useState(4);
+  const [players,setPlayers]=useState(1);
   
 
   const handleStartGame = () => {
@@ -17,6 +19,13 @@ function App() {
     setGameStarted(false);
     setBgColor('#304859');
   };
+  const handleBoardSizeChange = (size) => {
+    setBoardSize(size);  // Update board size when a button is clicked
+  }
+  const handlePlayersChange = (num) => {
+    setPlayers(num);
+  }
+ 
 
   return (
     <Box className='main' style={{
@@ -44,8 +53,8 @@ function App() {
                   justifyContent: 'space-between',
                   marginBottom:'32px'
               }}>
-                  <Button variant="contained" size="large" color="primary">Numbers</Button>
-                  <Button variant="contained" size="large">Icons</Button>
+                  <Button variant="contained" size="large" >Numbers</Button>
+                  <Button variant="contained" size="large" >Icons</Button>
             </Box>
               <Typography sx={{color:'#7191A5',marginBottom:'16px'}}>Numbers of Players</Typography>
               <Box className="num_icon" style={{
@@ -53,10 +62,10 @@ function App() {
                     justifyContent: 'space-between',
                     marginBottom:'32px'
                 }}>
-                    <Button variant="contained" size="large" color='primary'>1</Button>
-                    <Button variant="contained" size="large">2</Button>
-                    <Button variant="contained" size="large">3</Button>
-                    <Button variant="contained" size="large">4</Button>
+                    <Button variant="contained" size="large" onClick={() => handlePlayersChange(1)}>1</Button>
+                    <Button variant="contained" size="large" onClick={() => handlePlayersChange(2)}>2</Button>
+                    <Button variant="contained" size="large" onClick={() => handlePlayersChange(3)}>3</Button>
+                    <Button variant="contained" size="large" onClick={() => handlePlayersChange(4)}>4</Button>
               </Box>
                 <Typography sx={{color:'#7191A5',marginBottom:'16px'}}>Grid Size</Typography>
                 <Box className="num_icon" style={{
@@ -64,8 +73,8 @@ function App() {
                       justifyContent: 'space-between',
                       marginBottom:'32px'
                   }}>
-                      <Button variant="contained" size="large">4X4</Button>
-                      <Button variant="contained" size="large">6X6</Button>
+                      <Button variant="contained" size="large" onClick={() => handleBoardSizeChange(4)}>4X4</Button>
+                      <Button variant="contained" size="large" onClick={() => handleBoardSizeChange(6)}>6X6</Button>
                       
                 </Box>
               
@@ -76,7 +85,7 @@ function App() {
         </>
         ) : (
         // Render the game components
-        <Game onNewGame={handleNewGame}/>
+        <Game onNewGame={handleNewGame} boardSize={boardSize} players={players}/>
       )}
     </Box>
   )
