@@ -1,15 +1,17 @@
 import { useState } from 'react';
+import Game from '../src/pages/Game'
 import { Box, Typography, Button } from '@mui/material';
 import './App.css';
-import Header from './components/Header';
+
 
 function App() {
   const [gameStarted, setGameStarted] = useState(false);
-  const [imageSrc, setImageSrc] = useState('/babel.png');  // Replace with your initial image source if any
+  const [bgColor, setBgColor] = useState('#304859');
+  
 
   const handleStartGame = () => {
     setGameStarted(true);
-    setImageSrc('/babel.png');  // Replace with your actual image source
+    setBgColor('white');  // change the color to white when the game starts
   };
 
   return (
@@ -19,7 +21,9 @@ function App() {
       alignItems: 'center',
       justifyContent: 'center',
       height: '100vh', 
-    }}>
+      width:"100vw",
+      backgroundColor: bgColor, 
+      }}>
       {!gameStarted ? (
         <>
           <Typography sx={{textAlign:'center',marginBottom:'78px',fontSize:'40px'}}>memory</Typography>
@@ -36,8 +40,8 @@ function App() {
                   justifyContent: 'space-between',
                   marginBottom:'32px'
               }}>
-                  <Button variant="contained" color="primary">Numbers</Button>
-                  <Button variant="contained">Icons</Button>
+                  <Button variant="contained" size="large" color="primary">Numbers</Button>
+                  <Button variant="contained" size="large">Icons</Button>
             </Box>
               <Typography sx={{color:'#7191A5',marginBottom:'16px'}}>Numbers of Players</Typography>
               <Box className="num_icon" style={{
@@ -45,10 +49,10 @@ function App() {
                     justifyContent: 'space-between',
                     marginBottom:'32px'
                 }}>
-                    <Button variant="contained" color='primary'>1</Button>
-                    <Button variant="contained">2</Button>
-                    <Button variant="contained">3</Button>
-                    <Button variant="contained">4</Button>
+                    <Button variant="contained" size="large" color='primary'>1</Button>
+                    <Button variant="contained" size="large">2</Button>
+                    <Button variant="contained" size="large">3</Button>
+                    <Button variant="contained" size="large">4</Button>
               </Box>
                 <Typography sx={{color:'#7191A5',marginBottom:'16px'}}>Grid Size</Typography>
                 <Box className="num_icon" style={{
@@ -56,19 +60,19 @@ function App() {
                       justifyContent: 'space-between',
                       marginBottom:'32px'
                   }}>
-                      <Button variant="contained">4X4</Button>
-                      <Button variant="contained">6X6</Button>
+                      <Button variant="contained" size="large">4X4</Button>
+                      <Button variant="contained" size="large">6X6</Button>
                       
                 </Box>
               
                   <Box sx={{display:'flex',justifyContent:'center'}}>
-                    <Button variant="contained" onClick={handleStartGame}>Start Game</Button>
+                    <Button variant="contained" size="large" onClick={handleStartGame}>Start Game</Button>
                   </Box>
              </Box>
         </>
-      ) : (
+        ) : (
         // Render the game components
-        <img src={imageSrc} alt="game" />
+        <Game/>
       )}
     </Box>
   )
