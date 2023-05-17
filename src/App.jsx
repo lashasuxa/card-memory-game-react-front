@@ -13,6 +13,10 @@ function App() {
     setGameStarted(true);
     setBgColor('white');  // change the color to white when the game starts
   };
+  const handleNewGame = () => {
+    setGameStarted(false);
+    setBgColor('#304859');
+  };
 
   return (
     <Box className='main' style={{
@@ -72,7 +76,7 @@ function App() {
         </>
         ) : (
         // Render the game components
-        <Game/>
+        <Game onNewGame={handleNewGame}/>
       )}
     </Box>
   )

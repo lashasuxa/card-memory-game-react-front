@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import BoardBox from './BoardBox';  // import the new BoardBox component
 
 function Board() {
   const boardSize = 4;
@@ -12,15 +13,7 @@ function Board() {
           justifyContent="center"
         >
           {Array.from({ length: boardSize }, (_, colIndex) => (
-            <Box 
-              key={colIndex}
-              width="118px" 
-              height="118px" 
-              border="1px solid black" 
-              margin="20px"
-              borderRadius="50%"
-              backgroundColor="#304859"
-            />
+            <BoardBox key={colIndex} />  // use the new BoardBox component
           ))}
         </Box>
       ))}
