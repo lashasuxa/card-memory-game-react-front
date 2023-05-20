@@ -1,14 +1,24 @@
 // Board.js
 import { Box } from '@mui/material';
 import BoardBox from './BoardBox';
+import { useState } from 'react';
 
-function Board({ boardSize }) {
-  // Create an array from 0 to (boardSize * boardSize / 2) - 1
+function Board({ boardSize, theme }) {
   const allUniqueNumbers = Array.from({ length: boardSize * boardSize / 2 }, (_, i) => i);
-
-  // Duplicate and shuffle the array
   let allNumbersDoubled = [...allUniqueNumbers, ...allUniqueNumbers];
   allNumbersDoubled.sort(() => Math.random() - 0.5);
+
+  const [previousNumber, setPreviousNumber] = useState(null);
+  const [isCorrect, setIsCorrect] = useState(false);
+
+  const handleClick = (number) => {
+    if(previousNumber === number) {
+      setIsCorrect(true);
+    } else {
+      setIsCorrect(false);
+      setPreviousNumber(number);
+    }
+  }
 
   return (
     <Box sx={{pb:'102px'}}>
@@ -19,7 +29,13 @@ function Board({ boardSize }) {
           justifyContent="center"
         >
           {Array.from({ length: boardSize }, (_, colIndex) => (
-            <BoardBox key={colIndex} number={allNumbersDoubled[rowIndex * boardSize + colIndex]} boardSize={boardSize} /> 
+            <BoardBox key={colIndex} 
+              number={allNumbersDoubled[rowIndex * boardSize + colIndex]} 
+              boardSize={boardSize} 
+              theme={theme} 
+              handleClick={handleClick} 
+              isCorrect={isCorrect} 
+            />
           ))}
         </Box>
       ))}

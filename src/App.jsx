@@ -9,6 +9,7 @@ function App() {
   const [bgColor, setBgColor] = useState('#304859');
   const [boardSize,setBoardSize]=useState(4);
   const [players,setPlayers]=useState(1);
+  const [theme, setTheme] = useState('numbers');
   
 
   const handleStartGame = () => {
@@ -25,6 +26,14 @@ function App() {
   const handlePlayersChange = (num) => {
     setPlayers(num);
   }
+ 
+    // Add handlers for theme change
+    const handleThemeChangeToNumbers = () => {
+      setTheme('numbers');
+    }
+    const handleThemeChangeToIcons = () => {
+      setTheme('icons');
+    }
  
 
   return (
@@ -53,8 +62,8 @@ function App() {
                   justifyContent: 'space-between',
                   marginBottom:'32px'
               }}>
-                  <Button variant="contained" size="large" >Numbers</Button>
-                  <Button variant="contained" size="large" >Icons</Button>
+                   <Button variant="contained" size="large" onClick={handleThemeChangeToNumbers}>Numbers</Button>
+                  <Button variant="contained" size="large" onClick={handleThemeChangeToIcons}>Icons</Button>
             </Box>
               <Typography sx={{color:'#7191A5',marginBottom:'16px'}}>Numbers of Players</Typography>
               <Box className="num_icon" style={{
@@ -85,7 +94,7 @@ function App() {
         </>
         ) : (
         // Render the game components
-        <Game onNewGame={handleNewGame} boardSize={boardSize} players={players}/>
+        <Game onNewGame={handleNewGame} boardSize={boardSize} players={players} theme={theme}/>
       )}
     </Box>
   )

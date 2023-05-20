@@ -1,20 +1,25 @@
-// BoardBox.js
 import { useState } from 'react';
 import { Box } from '@mui/material';
+import { useEffect } from 'react';
 
-function BoardBox({ number, boardSize }) {
+function BoardBox({ number, boardSize, theme,isCorrect }) {  // accept theme as a prop
   const [bgColor, setBgColor] = useState('#304859');
+  const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = () => {
-    setBgColor('yellow');
-    setTimeout(()=>{
-      setBgColor('#304859')
-    },2000)
-    console.log("clicked")
-    console.log(boardSize)
+    setIsClicked(true);
+    console.log(theme);
+    
   };
 
   const boxSize = boardSize === 4 ? "118px" : "81px";
+  useEffect(() => {
+    if(!isCorrect && isClicked) {
+      setTimeout(() => {
+        setIsClicked(false);
+      }, 2000);
+    }
+  }, [isCorrect, isClicked]);
 
   return (
     <Box 
@@ -29,7 +34,11 @@ function BoardBox({ number, boardSize }) {
       fontSize={"44px"}
       backgroundColor={bgColor}
     >
-      {number}
+      {isClicked && (
+        theme === 'icons'
+          ?<img src='/White.png' alt="Icon" />
+          : number
+      )}
     </Box>
   );
 }
