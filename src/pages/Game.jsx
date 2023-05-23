@@ -7,17 +7,30 @@ import { Box } from '@mui/material';
 function Game({ onNewGame, boardSize, players, theme }) {
   const [isGameStarted, setGameStarted] = useState(false);
   const [restartKey, setRestartKey] = useState(0);
+  const [clicks, setClicks] = useState(0); // Create a new state for clicks
+  const [isGameOver, setIsGameOver] = useState(false);
+
 
   const handleRestart = () => {
     setGameStarted(false);
     setRestartKey((prevKey) => prevKey + 1);
+    setClicks(0); // Reset the number of clicks when the game restarts
+  };
+
+  const handleClick = () => {
+    setClicks(prevClicks => {
+      const newClicks = prevClicks + 1;
+      console.log('Number of clicks:', newClicks);
+      return newClicks;
+    });
   };
 
   return (
     <Box sx={{ width: '100%', height: '100%', padding: '67px 165px 35px' }}>
       <Header onNewGame={onNewGame} onRestart={handleRestart} />
-      <Board key={restartKey} boardSize={boardSize} theme={theme} isGameStarted={isGameStarted} setGameStarted={setGameStarted} />
-      <ScoreBoard players={players} />
+      <Board key={restartKey} boardSize={boardSize} theme={theme} isGameStarted={isGameStarted} setGameStarted={setGameStarted} onClick={handleClick} isGameOver={isGameOver}/>
+      <ScoreBoard players={players} isGameOver={isGameOver} restartKey={restartKey} clicks={clicks} />
+
     </Box>
   );
 }

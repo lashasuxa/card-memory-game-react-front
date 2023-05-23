@@ -2,7 +2,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
 
 function Header({ onNewGame, onRestart }) {
-  const [isGameStarted, setGameStarted] = useState(false);
+
 
   const handleRestart = () => {
     onRestart(); // Call the restart handler passed from the parent component

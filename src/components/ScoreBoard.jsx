@@ -7,19 +7,32 @@ function formatTime(time) {
   return `${minutes}:${seconds}`;
 }
 
-function ScoreBoard({ players }) {
+function ScoreBoard({ players,isGameOver,restartKey,clicks }) {
   const [time, setTime] = useState(0);
-  const [clicks, setClicks] = useState(0);
+  
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTime((prevTime) => prevTime + 1);
-    }, 1000);
+    let timer;
 
+    if (!isGameOver) {
+        timer = setInterval(() => {
+            setTime((prevTime) => prevTime + 1);
+        }, 1000);
+    } else {
+        clearInterval(timer);
+    }
+
+    // When onRestart changes, reset the timer and clicks
+    if(restartKey) {
+      setTime(0);
+      
+    }
+
+    // Cleanup function
     return () => {
-      clearInterval(timer);
+        clearInterval(timer);
     };
-  }, []);
+}, [isGameOver, restartKey]); 
 
   const formattedTime = formatTime(time);
 
@@ -63,6 +76,7 @@ function ScoreBoard({ players }) {
         >
           <p>Clicks</p>
           <p>{clicks}</p>
+          
         </Box>
       </Box>
     );
