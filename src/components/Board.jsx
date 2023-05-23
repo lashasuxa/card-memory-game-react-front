@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import BoardBox from './BoardBox';
 import { useState, useEffect } from 'react';
 
-function Board({ boardSize, theme,setIsGameOver,onClick }) {
+function Board({ boardSize, theme, setIsGameOver, onClick }) {
   const allUniqueNumbers = Array.from({ length: boardSize * boardSize / 2 }, (_, i) => i);
   let allNumbersDoubled = [...allUniqueNumbers, ...allUniqueNumbers];
   allNumbersDoubled.sort(() => Math.random() - 0.5);
@@ -30,23 +30,23 @@ function Board({ boardSize, theme,setIsGameOver,onClick }) {
         }, 1000);
       }
       setClickedBoxIds([]);
-      
-      // Check if all boxes are correct after each turn
-      const allBoxesCorrect = boxes.every(box => box.isCorrect);
-      if (allBoxesCorrect) {
-        setIsGameOver(true);  // Call the function passed from the parent component
-      }
     }
-  }, [clickedBoxIds, boxes]);  // Added boxes to the dependency array
-  // ...
+  }, [clickedBoxIds]);
+
+  useEffect(() => {
+    // Check if all boxes are correct after each box state change
+    const allBoxesCorrect = boxes.every(box => box.isCorrect);
+    if (allBoxesCorrect) {
+      setIsGameOver(true);  // Call the function passed from the parent component
+      console.log('finished');
+    }
+  }, [boxes]);
 
   const handleClick = (id) => {
-    
     if (boxes[id].isCorrect || boxes[id].isClicked || clickedBoxIds.length === 2) {
       return; // If the box is already matched, clicked, or two items are already clicked, do nothing
     }
     onClick();
-  
     setBoxes((prevBoxes) =>
       prevBoxes.map((prevBox, index) =>
         index === id ? { ...prevBox, isClicked: true } : prevBox

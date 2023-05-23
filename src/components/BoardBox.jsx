@@ -23,7 +23,7 @@ function BoardBox({ number, boardSize, theme, isClicked, isCorrect, onClick }) {
 
   return (
     <Box 
-      onClick={() => onClick(number)} 
+      onClick={handleBoxClick} 
       width={boxSize} 
       height={boxSize} 
       margin="20px"

@@ -20,7 +20,7 @@ function Game({ onNewGame, boardSize, players, theme }) {
   const handleClick = () => {
     setClicks(prevClicks => {
       const newClicks = prevClicks + 1;
-      console.log('Number of clicks:', newClicks);
+    
       return newClicks;
     });
   };
@@ -28,7 +28,7 @@ function Game({ onNewGame, boardSize, players, theme }) {
   return (
     <Box sx={{ width: '100%', height: '100%', padding: '67px 165px 35px' }}>
       <Header onNewGame={onNewGame} onRestart={handleRestart} />
-      <Board key={restartKey} boardSize={boardSize} theme={theme} isGameStarted={isGameStarted} setGameStarted={setGameStarted} onClick={handleClick} isGameOver={isGameOver}/>
+      <Board key={restartKey} boardSize={boardSize} theme={theme} isGameStarted={isGameStarted} setGameStarted={setGameStarted} onClick={handleClick} isGameOver={isGameOver} setIsGameOver={setIsGameOver}/>
       <ScoreBoard players={players} isGameOver={isGameOver} restartKey={restartKey} clicks={clicks} />
 
     </Box>

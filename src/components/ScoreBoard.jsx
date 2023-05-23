@@ -36,12 +36,7 @@ function ScoreBoard({ players,isGameOver,restartKey,clicks }) {
 
   const formattedTime = formatTime(time);
 
-  const handleClick = () => {
-    setClicks((prevClicks) => {
-      console.log('Moves:', prevClicks + 1); // Log the number of moves to the console
-      return prevClicks + 1;
-    });
-  };
+
   
 
   if (players === 1) {
