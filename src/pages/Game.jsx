@@ -4,11 +4,11 @@ import Board from '../components/Board';
 import ScoreBoard from '../components/ScoreBoard';
 import { Box } from '@mui/material';
 
-function Game({ onNewGame, boardSize, players, theme }) {
+function Game({ onNewGame, boardSize, players, theme,setIsGameOver,isGameOver  }) {
   const [isGameStarted, setGameStarted] = useState(false);
   const [restartKey, setRestartKey] = useState(0);
   const [clicks, setClicks] = useState(0); // Create a new state for clicks
-  const [isGameOver, setIsGameOver] = useState(false);
+  
 
 
   const handleRestart = () => {
@@ -28,9 +28,8 @@ function Game({ onNewGame, boardSize, players, theme }) {
   return (
     <Box sx={{ width: '100%', height: '100%', padding: '67px 165px 35px' }}>
       <Header onNewGame={onNewGame} onRestart={handleRestart} />
-      <Board key={restartKey} boardSize={boardSize} theme={theme} isGameStarted={isGameStarted} setGameStarted={setGameStarted} onClick={handleClick} isGameOver={isGameOver} setIsGameOver={setIsGameOver}/>
+      <Board key={restartKey} boardSize={boardSize} theme={theme} isGameStarted={isGameStarted} setGameStarted={setGameStarted} onClick={handleClick} setIsGameOver={setIsGameOver} />
       <ScoreBoard players={players} isGameOver={isGameOver} restartKey={restartKey} clicks={clicks} />
-
     </Box>
   );
 }
