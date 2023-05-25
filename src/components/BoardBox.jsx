@@ -1,10 +1,8 @@
-// BoardBox.js
 import { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 
-function BoardBox({ number, boardSize, theme, isClicked, isCorrect, onClick }) {
+function BoardBox({ number, image, boardSize, theme, isClicked, isCorrect, onClick }) {
   const [bgColor, setBgColor] = useState('#304859');
-  
   const boxSize = boardSize === 4 ? "118px" : "81px";
 
   useEffect(() => {
@@ -16,8 +14,8 @@ function BoardBox({ number, boardSize, theme, isClicked, isCorrect, onClick }) {
   }, [isCorrect]);
 
   const handleBoxClick = () => {
-    if(!isCorrect && !isClicked) { // Only handle click if the box has not been clicked or correctly guessed
-      onClick(); 
+    if(!isCorrect && !isClicked) {
+      onClick();
     }
   }
 
@@ -36,7 +34,7 @@ function BoardBox({ number, boardSize, theme, isClicked, isCorrect, onClick }) {
     >
       {isClicked && (
         theme === 'icons'
-          ?<img src='/White.png' alt="Icon" />
+          ? <img src={`/${image}.png`} alt="Icon" />
           : number
       )}
     </Box>

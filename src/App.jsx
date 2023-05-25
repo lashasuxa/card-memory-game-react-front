@@ -46,8 +46,23 @@ function App() {
   }
 
   const handleClose = () => {
+  
     setModalOpen(false);
     setIsGameOver(false);
+   
+    
+  };
+  const handleRestartModal =()=>{
+    setModalOpen(false);
+    setIsGameOver(false);
+    handleStartGame();
+    console.log("restarted from modal")
+  };
+  const handleNewGameModal = () => {
+    console.log("setup new game")
+    setModalOpen(false);
+    setIsGameOver(false);
+    handleNewGame();
   };
 
   const body = (
@@ -67,8 +82,9 @@ function App() {
         <Typography>39 Moves</Typography>
       </Box>
       <Box sx={{display:'flex',flexDirection:'row',justifyContent:'space-between',mb:5}}>
-        <Button variant="contained" color="primary" onClick={handleClose}>Restart</Button>
-        <Button variant="contained" color="primary" onClick={handleClose}>Setup New Game</Button>
+       
+        <Button variant="contained" color="primary" onClick={handleRestartModal}>Restart</Button>
+        <Button variant="contained" color="primary" onClick={handleNewGameModal}>Setup New Game</Button>
       </Box>
     </Box>
   );
