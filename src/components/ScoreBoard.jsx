@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function formatTime(time) {
   const minutes = Math.floor(time / 60).toString().padStart(2, '0');
@@ -7,37 +7,31 @@ function formatTime(time) {
   return `${minutes}:${seconds}`;
 }
 
-function ScoreBoard({ players,isGameOver,restartKey,clicks }) {
+function ScoreBoard({ players, isGameOver, restartKey, clicks, setClicks }) {
   const [time, setTime] = useState(0);
-  
+  const timerRef = useRef(null);
 
   useEffect(() => {
-    let timer;
-
     if (!isGameOver) {
-        timer = setInterval(() => {
-            setTime((prevTime) => prevTime + 1);
-        }, 1000);
+      timerRef.current = setInterval(() => {
+        setTime((prevTime) => prevTime + 1);
+      }, 1000);
     } else {
-        clearInterval(timer);
+      clearInterval(timerRef.current);
     }
 
     // When onRestart changes, reset the timer and clicks
-    if(restartKey) {
+    if (restartKey) {
       setTime(0);
-      
     }
 
     // Cleanup function
     return () => {
-        clearInterval(timer);
+      clearInterval(timerRef.current);
     };
-}, [isGameOver, restartKey]); 
+  }, [isGameOver, restartKey]);
 
   const formattedTime = formatTime(time);
-
-
-  
 
   if (players === 1) {
     return (
@@ -71,7 +65,6 @@ function ScoreBoard({ players,isGameOver,restartKey,clicks }) {
         >
           <p>Clicks</p>
           <p>{clicks}</p>
-          
         </Box>
       </Box>
     );

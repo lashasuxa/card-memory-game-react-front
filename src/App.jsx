@@ -52,11 +52,11 @@ function App() {
    
     
   };
-  const handleRestartModal = () => {
-    console.log("restarted from modal")
+  const handleRestartModal =()=>{
     setModalOpen(false);
     setIsGameOver(false);
     handleStartGame();
+    console.log("restarted from modal")
   };
   const handleNewGameModal = () => {
     console.log("setup new game")
