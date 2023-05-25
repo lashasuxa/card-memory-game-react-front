@@ -1,33 +1,35 @@
-import React, { useState } from 'react';
+// Game.js
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Board from '../components/Board';
 import ScoreBoard from '../components/ScoreBoard';
 import { Box } from '@mui/material';
 
-function Game({ onNewGame, boardSize, players, theme,setIsGameOver,isGameOver  }) {
+function Game({ onNewGame, boardSize, players, theme, setIsGameOver, isGameOver }) {
   const [isGameStarted, setGameStarted] = useState(false);
   const [restartKey, setRestartKey] = useState(0);
-  const [clicks, setClicks] = useState(0); // Create a new state for clicks
-  
+  const [clicks, setClicks] = useState(0);
 
-
-  const handleRestart = () => {
+  // Reset game state to its initial state
+  const resetGameState = () => {
     setGameStarted(false);
-    setRestartKey((prevKey) => prevKey + 1);
-    setClicks(0); // Reset the number of clicks when the game restarts
-  };
+    setClicks(0);
+    setRestartKey(restartKey + 1);
+  }
+
+  useEffect(() => {
+    if (isGameOver) {
+      resetGameState();
+    }
+  }, [isGameOver]);
 
   const handleClick = () => {
-    setClicks(prevClicks => {
-      const newClicks = prevClicks + 1;
-    
-      return newClicks;
-    });
+    setClicks(prevClicks => prevClicks + 1);
   };
 
   return (
     <Box sx={{ width: '100%', height: '100%', padding: '67px 165px 35px' }}>
-      <Header onNewGame={onNewGame} onRestart={handleRestart} />
+      <Header onNewGame={onNewGame} onRestart={resetGameState} />
       <Board key={restartKey} boardSize={boardSize} theme={theme} isGameStarted={isGameStarted} setGameStarted={setGameStarted} onClick={handleClick} setIsGameOver={setIsGameOver} />
       <ScoreBoard players={players} isGameOver={isGameOver} restartKey={restartKey} clicks={clicks} />
     </Box>

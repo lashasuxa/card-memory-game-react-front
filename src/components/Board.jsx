@@ -18,7 +18,7 @@ function Board({ boardSize, theme, setIsGameOver, onClick }) {
   useEffect(() => {
     if (clickedBoxIds.length === 2) {
       const [firstBoxId, secondBoxId] = clickedBoxIds;
-      if (boxes[firstBoxId].image === boxes[secondBoxId].image) {
+      if (boxes[firstBoxId].number === boxes[secondBoxId].number) {
         setBoxes((boxes) =>
           boxes.map((box, i) =>
             i === firstBoxId || i === secondBoxId ? { ...box, isCorrect: true } : box

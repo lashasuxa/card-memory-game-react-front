@@ -3,6 +3,7 @@ import { Box } from '@mui/material';
 
 function BoardBox({ number, image, boardSize, theme, isClicked, isCorrect, onClick }) {
   const [bgColor, setBgColor] = useState('#304859');
+
   const boxSize = boardSize === 4 ? "118px" : "81px";
 
   useEffect(() => {
@@ -15,7 +16,7 @@ function BoardBox({ number, image, boardSize, theme, isClicked, isCorrect, onCli
 
   const handleBoxClick = () => {
     if(!isCorrect && !isClicked) {
-      onClick();
+      onClick(); 
     }
   }
 
