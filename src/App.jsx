@@ -13,10 +13,13 @@ function App() {
   const [theme, setTheme] = useState('numbers');
   const [isGameOver, setIsGameOver] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [gameKey, setGameKey] = useState(Date.now());
 
   useEffect(() => {
     if (isGameOver) {
       setModalOpen(true);
+      // Update the time state here
+      setTime(Date.now() - gameKey);
     }
   }, [isGameOver]);
 
@@ -27,6 +30,8 @@ function App() {
     // Reset clicks and time
     setClicks(0);
     setTime(0);
+    // Update the gameKey
+    setGameKey(Date.now());
   };
 
   const handleNewGame = () => {
@@ -74,6 +79,8 @@ function App() {
   };
 
   function formatTime(time) {
+    // Convert time to seconds
+    time = Math.floor(time / 1000);
     const minutes = Math.floor(time / 60).toString().padStart(2, '0');
     const seconds = (time % 60).toString().padStart(2, '0');
     return `${minutes}:${seconds}`;
@@ -137,6 +144,7 @@ function App() {
         </>
       ) : (
         <Game
+        key={gameKey}
         onNewGame={handleNewGame}
         boardSize={boardSize}
         players={players}

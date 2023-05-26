@@ -11,23 +11,7 @@ function ScoreBoard({ players, isGameOver, restartKey, clicks, setClicks, time, 
   
   const timerRef = useRef(null);
 
-  useEffect(() => {
-    if (!isGameOver) {
-      timerRef.current = setInterval(() => {
-        setTime((prevTime) => prevTime + 1);
-      }, 1000);
-    } else {
-      clearInterval(timerRef.current);
-    }
 
-    if (restartKey) {
-      setTime(0);
-    }
-
-    return () => {
-      clearInterval(timerRef.current);
-    };
-  }, [isGameOver, restartKey]);
 
   const formattedTime = formatTime(time);
 
