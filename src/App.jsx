@@ -4,6 +4,8 @@ import { Box, Typography, Button, Modal } from '@mui/material';
 import './App.css';
 
 function App() {
+  const [clicks, setClicks] = useState(0);
+  const [time, setTime] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
   const [bgColor, setBgColor] = useState('#304859');
   const [boardSize, setBoardSize] = useState(4);
@@ -22,11 +24,17 @@ function App() {
     setGameStarted(true);
     setBgColor('white');
     setIsGameOver(false);
+    // Reset clicks and time
+    setClicks(0);
+    setTime(0);
   };
 
   const handleNewGame = () => {
     setGameStarted(false);
     setBgColor('#304859');
+    // Reset clicks and time
+    setClicks(0);
+    setTime(0);
   };
 
   const handleBoardSizeChange = (size) => {
@@ -65,6 +73,16 @@ function App() {
     handleNewGame();
   };
 
+  function formatTime(time) {
+    const minutes = Math.floor(time / 60).toString().padStart(2, '0');
+    const seconds = (time % 60).toString().padStart(2, '0');
+    return `${minutes}:${seconds}`;
+  }
+
+
+
+  const formattedTime = formatTime(time);
+
   const body = (
     <Box sx={{ width: 645, bgcolor: 'background.paper', boxShadow: 24, p: 4, mx: 'auto', my: '20%', borderRadius: '10px',color:"black"  }}>
       <Typography id="modal-title" variant="h2" component="h2" textAlign='center' >
@@ -75,11 +93,11 @@ function App() {
       </Typography>
       <Box sx={{bgcolor:'#DFE7EC', height:72,marginBottom:2, paddingLeft:'32px',paddingRight:'32px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <Typography>Time Elapsed</Typography>
-        <Typography>1:53</Typography>
+        <Typography>{formattedTime}</Typography>
       </Box>
       <Box sx={{bgcolor:'#DFE7EC', height:72,marginBottom:4 , paddingLeft:'32px',paddingRight:'32px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <Typography>Moves Taken</Typography>
-        <Typography>39 Moves</Typography>
+        <Typography>{clicks}</Typography>
       </Box>
       <Box sx={{display:'flex',flexDirection:'row',justifyContent:'space-between',mb:5}}>
        
@@ -118,7 +136,20 @@ function App() {
           </Box>
         </>
       ) : (
-        <Game onNewGame={handleNewGame} boardSize={boardSize} players={players} theme={theme} isGameOver={isGameOver} setIsGameOver={setIsGameOver} />
+        <Game
+        onNewGame={handleNewGame}
+        boardSize={boardSize}
+        players={players}
+        theme={theme}
+        isGameOver={isGameOver}
+        setIsGameOver={setIsGameOver}
+        // Pass down clicks and setClicks
+        clicks={clicks}
+        setClicks={setClicks}
+        // Pass down time and setTime
+        time={time}
+        setTime={setTime}
+      />
       )}
       <Modal
         open={modalOpen}

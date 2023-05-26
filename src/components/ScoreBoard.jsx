@@ -7,8 +7,8 @@ function formatTime(time) {
   return `${minutes}:${seconds}`;
 }
 
-function ScoreBoard({ players, isGameOver, restartKey, clicks, setClicks }) {
-  const [time, setTime] = useState(0);
+function ScoreBoard({ players, isGameOver, restartKey, clicks, setClicks, time, setTime }) {
+  
   const timerRef = useRef(null);
 
   useEffect(() => {
@@ -20,12 +20,10 @@ function ScoreBoard({ players, isGameOver, restartKey, clicks, setClicks }) {
       clearInterval(timerRef.current);
     }
 
-    // When onRestart changes, reset the timer and clicks
     if (restartKey) {
       setTime(0);
     }
 
-    // Cleanup function
     return () => {
       clearInterval(timerRef.current);
     };
