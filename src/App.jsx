@@ -60,7 +60,7 @@ function App() {
     // Reset clicks and time
     setClicks(0);
     setTime(0);
-    setScores(0);
+    setScores(Array(players).fill(0));
   };
 
   const handleBoardSizeChange = (size) => {
