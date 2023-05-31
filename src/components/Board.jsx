@@ -19,9 +19,8 @@ function Board({ boardSize, theme, setIsGameOver, onClick, currentPlayer, onScor
     if (clickedBoxIds.length === 2) {
       const [firstBoxId, secondBoxId] = clickedBoxIds;
       if (boxes[firstBoxId].number === boxes[secondBoxId].number) {
-        if(players > 1){
-          onScoreUpdate(currentPlayer); // Increment the score for the current player if they made a correct match
-        }
+        console.log("matched"); // Log "matched" when a pair is matched
+        onScoreUpdate(currentPlayer); // Increment the score for the current player if they made a correct match
         setBoxes((boxes) =>
           boxes.map((box, i) =>
             i === firstBoxId || i === secondBoxId ? { ...box, isCorrect: true } : box
@@ -38,7 +37,7 @@ function Board({ boardSize, theme, setIsGameOver, onClick, currentPlayer, onScor
       }
       setClickedBoxIds([]);
     }
-  }, [clickedBoxIds, boxes, onScoreUpdate, currentPlayer, players]);
+  }, [clickedBoxIds, boxes, onScoreUpdate, currentPlayer]);
 
   const handleClick = (boxId) => {
     if (clickedBoxIds.length === 2 || boxes[boxId].isClicked || boxes[boxId].isCorrect) return;
@@ -48,7 +47,7 @@ function Board({ boardSize, theme, setIsGameOver, onClick, currentPlayer, onScor
   }
 
   useEffect(() => {
-    setIsGameOver(boxes.every(box => box.isCorrect));
+    setIsGameOver(boxes.every((box) => box.isCorrect));
   }, [boxes, setIsGameOver]);
 
   return (
