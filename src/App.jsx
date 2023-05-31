@@ -15,6 +15,26 @@ function App() {
   const [modalOpen, setModalOpen] = useState(false);
   const [gameKey, setGameKey] = useState(Date.now());
 
+  const [currentPlayer, setCurrentPlayer] = useState(1);
+  const [scores, setScores] = useState(Array(players).fill(0));
+
+  const handlePlayerTurn = () => {
+    setCurrentPlayer(currentPlayer % players + 1);
+  };
+
+  const handleScoreUpdate = (player) => {
+    setScores(prevScores => {
+      const newScores = [...prevScores];
+      newScores[player - 1]++;
+      return newScores;
+    });
+  };
+
+  useEffect(() => {
+    setScores(Array(players).fill(0));
+  }, [players]);
+
+
   useEffect(() => {
     if (isGameOver) {
       setModalOpen(true);
@@ -40,6 +60,7 @@ function App() {
     // Reset clicks and time
     setClicks(0);
     setTime(0);
+    setScores(0);
   };
 
   const handleBoardSizeChange = (size) => {
@@ -157,6 +178,10 @@ function App() {
         // Pass down time and setTime
         time={time}
         setTime={setTime}
+        currentPlayer={currentPlayer}
+        onPlayerTurn={handlePlayerTurn}
+        scores={scores}
+        onScoreUpdate={handleScoreUpdate}
       />
       )}
       <Modal

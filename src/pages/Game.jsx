@@ -1,14 +1,19 @@
-// Game.js
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Board from '../components/Board';
 import ScoreBoard from '../components/ScoreBoard';
 import { Box } from '@mui/material';
 
-function Game({ onNewGame, boardSize, players, theme, setIsGameOver, isGameOver, clicks, setClicks, time, setTime }) {
+function Game({ onNewGame, boardSize, players, theme, setIsGameOver, isGameOver, clicks, setClicks, time, setTime, currentPlayer, onPlayerTurn, scores, onScoreUpdate }) {
   const [isGameStarted, setGameStarted] = useState(false);
   const [restartKey, setRestartKey] = useState(0);
   
+
+  
+  const handleClick = () => {
+    setClicks(prevClicks => prevClicks + 1);
+    onPlayerTurn();
+  };
 
   // Reset game state to its initial state
   const resetGameState = () => {
@@ -17,6 +22,8 @@ function Game({ onNewGame, boardSize, players, theme, setIsGameOver, isGameOver,
     // Reset time and clicks
     setTime(0);
     setClicks(0);
+    // Reset scores
+    onScoreUpdate();
   }
 
   useEffect(() => {
@@ -27,10 +34,14 @@ function Game({ onNewGame, boardSize, players, theme, setIsGameOver, isGameOver,
       return () => clearInterval(timer); // clean up on component unmount or when isGameOver changes
     }
   }, [isGameOver, setTime]);
-
-  const handleClick = () => {
-    setClicks(prevClicks => prevClicks + 1);
-  };
+    // simulate a score update
+    useEffect(() => {
+      const intervalId = setInterval(() => {
+        onScoreUpdate(currentPlayer);
+        onPlayerTurn(); // change to the next player
+      }, 3000);
+      return () => clearInterval(intervalId);
+    }, [currentPlayer, onPlayerTurn, onScoreUpdate]);
 
   return (
     <Box>
@@ -41,12 +52,18 @@ function Game({ onNewGame, boardSize, players, theme, setIsGameOver, isGameOver,
         theme={theme}
         isGameStarted={isGameStarted}
         setGameStarted={setGameStarted}
-        // Pass down onClick as handleClick
-        onClick={() => setClicks(prevClicks => prevClicks + 1)}
         setIsGameOver={setIsGameOver}
+        currentPlayer={currentPlayer}
+        onClick={() => {
+          handleClick();
+          // Assuming onScoreUpdate is called when a match is made
+          onScoreUpdate(currentPlayer);
+        }}
       />
       <ScoreBoard
         players={players}
+        currentPlayer={currentPlayer}
+        scores={scores}
         isGameOver={isGameOver}
         restartKey={restartKey}
         // Pass down clicks and setClicks

@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import BoardBox from './BoardBox';
 import { useState, useEffect } from 'react';
 
-function Board({ boardSize, theme, setIsGameOver, onClick }) {
+function Board({ boardSize, theme, setIsGameOver, onClick, currentPlayer, onScoreUpdate, players }) {
   const imageNames = ['anchor', 'car', 'chicken', 'coffee', 'currency-sign', 'dinner', 'flask', 'football', 'hand-spock', 'house', 'microwave', 'moon', 'notes', 'pizza', 'snowflake', 'sun', 'tool', 'umbrella'];
   if (boardSize * boardSize / 2 > imageNames.length) {
     throw new Error("Not enough unique images to populate the board!");
@@ -19,6 +19,9 @@ function Board({ boardSize, theme, setIsGameOver, onClick }) {
     if (clickedBoxIds.length === 2) {
       const [firstBoxId, secondBoxId] = clickedBoxIds;
       if (boxes[firstBoxId].number === boxes[secondBoxId].number) {
+        if(players > 1){
+          onScoreUpdate(currentPlayer); // Increment the score for the current player if they made a correct match
+        }
         setBoxes((boxes) =>
           boxes.map((box, i) =>
             i === firstBoxId || i === secondBoxId ? { ...box, isCorrect: true } : box
@@ -35,28 +38,18 @@ function Board({ boardSize, theme, setIsGameOver, onClick }) {
       }
       setClickedBoxIds([]);
     }
-  }, [clickedBoxIds]);
+  }, [clickedBoxIds, boxes, onScoreUpdate, currentPlayer, players]);
+
+  const handleClick = (boxId) => {
+    if (clickedBoxIds.length === 2 || boxes[boxId].isClicked || boxes[boxId].isCorrect) return;
+    setBoxes(boxes.map((box, i) => i === boxId ? { ...box, isClicked: true } : box));
+    setClickedBoxIds([...clickedBoxIds, boxId]);
+    onClick();
+  }
 
   useEffect(() => {
-    const allBoxesCorrect = boxes.every(box => box.isCorrect);
-    if (allBoxesCorrect) {
-      setIsGameOver(true);
-      console.log('finished');
-    }
-  }, [boxes]);
-
-  const handleClick = (id) => {
-    if (boxes[id].isCorrect || boxes[id].isClicked || clickedBoxIds.length === 2) {
-      return;
-    }
-    onClick();
-    setBoxes((prevBoxes) =>
-      prevBoxes.map((prevBox, index) =>
-        index === id ? { ...prevBox, isClicked: true } : prevBox
-      )
-    );
-    setClickedBoxIds((prevIds) => [...prevIds, id]);
-  };
+    setIsGameOver(boxes.every(box => box.isCorrect));
+  }, [boxes, setIsGameOver]);
 
   return (
     <Box sx={{ pb: '102px' }}>
