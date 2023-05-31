@@ -37,12 +37,6 @@ function ScoreBoard({ players, isGameOver, restartKey, clicks, setClicks, time, 
     onScoreUpdate(currentTurn); // Update the score for the current turn player
   };
 
-  useEffect(() => {
-    if (isGameOver) {
-      handleScoreUpdate();
-    }
-  }, [isGameOver, handleScoreUpdate]);
-
   if (players === 1) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', gap: '30px' }}>
@@ -98,11 +92,11 @@ function ScoreBoard({ players, isGameOver, restartKey, clicks, setClicks, time, 
           >
             <p>Player {i + 1}</p>
             <p>Score: {scoresState[i]}</p>
-            {currentTurn === i + 1 && (
-              <span style={{ color: '#152938' }}>CURRENT TURN: {currentTurn}</span>
-            )}
           </Box>
         ))}
+        <span style={{ color: '#152938' }}>
+          CURRENT TURN: {currentTurn}
+        </span>
       </Box>
     );
   }
