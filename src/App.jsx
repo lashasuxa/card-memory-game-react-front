@@ -27,6 +27,7 @@ function App() {
     setScores(Array(players).fill(0));
     setCardsClicked(0);
     setGameKey(Date.now());
+    
   }
 
   const handleScoreUpdate = (player) => {
@@ -113,7 +114,10 @@ function App() {
 
   const formattedTime = formatTime(time);
 
-  const body = (
+  const maxScore = Math.max(...scores);
+  const winningPlayerIndex = scores.findIndex(score => score === maxScore);
+  
+  const body = players === 1 ? (
     <Box sx={{ width: 645, bgcolor: 'background.paper', boxShadow: 24, p: 4, mx: 'auto', my: '20%', borderRadius: '10px',color:"black"  }}>
       <Typography id="modal-title" variant="h2" component="h2" textAlign='center' >
         You did it!
@@ -131,6 +135,25 @@ function App() {
       </Box>
       <Box sx={{display:'flex',flexDirection:'row',justifyContent:'space-between',mb:5}}>
        
+        <Button variant="contained" color="primary" onClick={handleRestartModal}>Restart</Button>
+        <Button variant="contained" color="primary" onClick={handleNewGameModal}>Setup New Game</Button>
+      </Box>
+    </Box>
+  ) : (
+    <Box sx={{ width: 645, bgcolor: 'background.paper', boxShadow: 24, p: 4, mx: 'auto', my: '20%', borderRadius: '10px',color:"black"  }}>
+      <Typography id="modal-title" variant="h2" component="h2" textAlign='center' >
+        Player {winningPlayerIndex + 1} Wins!
+      </Typography>
+      <Typography id="modal-description" sx={{ mt: 2,textAlign:'center',mb:3 }}>
+        Game over! Here are the results…
+      </Typography>
+      {scores.map((score, index) => (
+        <Box key={index} sx={{bgcolor:'#DFE7EC', height:72, marginBottom:2, paddingLeft:'32px',paddingRight:'32px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+          <Typography>Player {index + 1} Score</Typography>
+          <Typography>{score}</Typography>
+        </Box>
+      ))}
+      <Box sx={{display:'flex',flexDirection:'row',justifyContent:'space-between',mb:5}}>
         <Button variant="contained" color="primary" onClick={handleRestartModal}>Restart</Button>
         <Button variant="contained" color="primary" onClick={handleNewGameModal}>Setup New Game</Button>
       </Box>

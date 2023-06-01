@@ -8,7 +8,10 @@ function BoardBox({ number, image, boardSize, theme, isClicked, isCorrect, onCli
 
   useEffect(() => {
     if(isCorrect){
-      setBgColor('#808080');
+      setBgColor('#FDA214');
+      setTimeout(() => {
+        setBgColor('#808080');
+      }, 500); // Change to #808080 after 500ms
     } else {
       setBgColor('#304859');
     }
