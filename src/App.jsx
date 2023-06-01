@@ -14,53 +14,60 @@ function App() {
   const [isGameOver, setIsGameOver] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [gameKey, setGameKey] = useState(Date.now());
-
   const [currentPlayer, setCurrentPlayer] = useState(1);
   const [scores, setScores] = useState(Array(players).fill(0));
+  const [cardsClicked, setCardsClicked] = useState(0);
 
-  const handlePlayerTurn = () => {
-    setCurrentPlayer(currentPlayer % players + 1);
-  };
+  const resetAll = () => {
+    setGameStarted(false);
+    setClicks(0);
+    setTime(0);
+    setCurrentPlayer(1);
+    setIsGameOver(false);
+    setScores(Array(players).fill(0));
+    setCardsClicked(0);
+    setGameKey(Date.now());
+  }
 
   const handleScoreUpdate = (player) => {
     setScores(prevScores => {
-      const newScores = [...prevScores];
-      newScores[player - 1]++;
-      return newScores;
+        const newScores = [...prevScores];
+        console.log('Updating score for player:', player);
+        newScores[player - 1]++;
+        console.log('Updated scores:', newScores); 
+        return newScores;
     });
+  };
+
+  const handlePlayerTurn = () => {
+    if (cardsClicked === 2) {
+      setCurrentPlayer((currentPlayer % players) + 1);
+      setCardsClicked(0);
+    } else {
+      setCardsClicked(cardsClicked + 1);
+    }
   };
 
   useEffect(() => {
     setScores(Array(players).fill(0));
   }, [players]);
 
-
   useEffect(() => {
     if (isGameOver) {
       setModalOpen(true);
-      // Update the time state here
       setTime(Date.now() - gameKey);
     }
   }, [isGameOver]);
 
   const handleStartGame = () => {
+    resetAll();
     setGameStarted(true);
     setBgColor('white');
-    setIsGameOver(false);
-    // Reset clicks and time
-    setClicks(0);
-    setTime(0);
-    // Update the gameKey
-    setGameKey(Date.now());
   };
 
   const handleNewGame = () => {
-    setGameStarted(false);
     setBgColor('#304859');
-    // Reset clicks and time
-    setClicks(0);
-    setTime(0);
-    setScores(Array(players).fill(0));
+    resetAll();
   };
 
   const handleBoardSizeChange = (size) => {
@@ -80,34 +87,29 @@ function App() {
   }
 
   const handleClose = () => {
-  
     setModalOpen(false);
-    setIsGameOver(false);
-   
-    
   };
+  
   const handleRestartModal =()=>{
+    resetAll();
     setModalOpen(false);
-    setIsGameOver(false);
-    handleStartGame();
+    setGameStarted(true);
     console.log("restarted from modal")
   };
+  
   const handleNewGameModal = () => {
+    setBgColor('#304859');
     console.log("setup new game")
+    resetAll();
     setModalOpen(false);
-    setIsGameOver(false);
-    handleNewGame();
   };
 
   function formatTime(time) {
-    // Convert time to seconds
     time = Math.floor(time / 1000);
     const minutes = Math.floor(time / 60).toString().padStart(2, '0');
     const seconds = (time % 60).toString().padStart(2, '0');
     return `${minutes}:${seconds}`;
   }
-
-
 
   const formattedTime = formatTime(time);
 
@@ -165,24 +167,26 @@ function App() {
         </>
       ) : (
         <Game
-        key={gameKey}
-        onNewGame={handleNewGame}
-        boardSize={boardSize}
-        players={players}
-        theme={theme}
-        isGameOver={isGameOver}
-        setIsGameOver={setIsGameOver}
-        // Pass down clicks and setClicks
-        clicks={clicks}
-        setClicks={setClicks}
-        // Pass down time and setTime
-        time={time}
-        setTime={setTime}
-        currentPlayer={currentPlayer}
-        onPlayerTurn={handlePlayerTurn}
-        scores={scores}
-        onScoreUpdate={handleScoreUpdate}
-      />
+          key={gameKey}
+          onNewGame={handleNewGame}
+          boardSize={boardSize}
+          players={players}
+          theme={theme}
+          isGameOver={isGameOver}
+          setIsGameOver={setIsGameOver}
+          // Pass down clicks and setClicks
+          clicks={clicks}
+          setClicks={setClicks}
+          // Pass down time and setTime
+          time={time}
+          setTime={setTime}
+          currentPlayer={currentPlayer}
+          onPlayerTurn={handlePlayerTurn}
+          scores={scores}
+          onScoreUpdate={handleScoreUpdate}
+          cardsClicked={cardsClicked}
+          setCardsClicked={setCardsClicked}
+        />
       )}
       <Modal
         open={modalOpen}
